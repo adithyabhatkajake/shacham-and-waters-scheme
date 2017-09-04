@@ -1,3 +1,4 @@
 lib/*.o
 tests/*.o
 .vscode/*
+*.o
