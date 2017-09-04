@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g
 INCLUDES = -I include/
-LIBS = -lrs
+LIBS = -lrs -lgmp -pbc
 
 LIB_DIR   := lib
 LIB_SRCS  := handlefile.c
@@ -24,4 +24,3 @@ print-%:
 clean: 
 	$(RM) $(LIB_DIR)/*.o
 	make -C tests/ clean
-	
