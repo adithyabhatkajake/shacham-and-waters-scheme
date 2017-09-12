@@ -1,2 +1,3 @@
-a.out
+lib/*.o
+tests/*.o
 .vscode/*
