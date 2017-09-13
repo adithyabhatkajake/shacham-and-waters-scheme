@@ -1,9 +1,9 @@
 CC = gcc
 CFLAGS = 
 INCLUDES = -I ../include/
-LIBS = -lrs
+LIBS = -lrs -lgmp -lpbc
 
-SRCS := reed-solomon.c file_block.c file_encode.c
+SRCS := reed-solomon.c file_block.c file_encode.c write_test.c
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all
@@ -35,9 +35,16 @@ file_encode.o: ../lib/handlefile.o file_encode.c
 
 write_test.o: ../lib/handlefile.o write_test.c
 	@echo "==========================="
-	@echo "Running Encode File Tests:"
+	@echo "Running File Write Tests:"
 	$(CC) $(FLAGS) $(INCLUDES) write_test.c ../lib/handlefile.o -o $@ $(LIBS)
 	./$@ ../LICENSE
+	@echo "==========================="
+
+blstest.o: ../lib/bls.o blstest.c
+	@echo "==========================="
+	@echo "Running BLS Tests:"
+	$(CC) $(FLAGS) $(INCLUDES) blstest.c ../lib/bls.o -o $@ $(LIBS)
+	./$@
 	@echo "==========================="
 
 clean: 

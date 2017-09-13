@@ -4,7 +4,7 @@ INCLUDES = -I include/
 LIBS = -lrs -lgmp -pbc
 
 LIB_DIR   := lib
-LIB_SRCS  := handlefile.c
+LIB_SRCS  := handlefile.c bls.c
 LIB_OBJS  := $(addprefix $(LIB_DIR)/, $(LIB_SRCS:.c=.o))
 
 .PHONY: all
