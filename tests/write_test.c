@@ -13,19 +13,24 @@ static void usage(char *scriptname)
 
 static bool file_compare(struct file_t f1, struct file_t f2)
 {
-    if(f1.nr_blocks != f2.nr_blocks)
+    if(f1.nr_blocks != f2.nr_blocks) {
+        fprintf(stderr,"%d|%d nr_blocks not same\n",f1.nr_blocks,f2.nr_blocks);
         return false;
+    }
 
     for(int i=0;i<f1.nr_blocks;i++) {
         struct file_piece_t fpiece1,fpiece2;
         fpiece1 = f1.pieces[i];
         fpiece2 = f2.pieces[i];
 
-        if(fpiece1.blk_size != fpiece2.blk_size)
+        if(fpiece1.blk_size != fpiece2.blk_size) {
+            fprintf(stderr,"%d[%d|%d] blk_size not same\n",i,fpiece1.blk_size,fpiece2.blk_size);
             return false;
+        }
 
         for(int j=0;j<6;j++) {
             if(fpiece1.parity[j]!=fpiece2.parity[j])
+
                 return false;
         }
 
@@ -64,5 +69,5 @@ void main(int argc, char *argv[])
     printf("Original File Blocks: %d\n"
         "Recovered File Blocks:%d\n",
         f->nr_blocks, f2->nr_blocks);
-
+    printf("Big Result(Drum rolls:%s)\n",file_compare(*f,*f2)==true?"true":"false");
 }
