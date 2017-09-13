@@ -138,36 +138,30 @@ struct file_t* recover_file(const char* filename)
         nr_blocks++;
     }
 
-    struct file_t *file = malloc(sizeof(struct file_t));
+    struct file_t *file = (struct file_t*)malloc(sizeof(struct file_t));
     file->nr_blocks = nr_blocks;
-    file->pieces = malloc(sizeof(struct file_piece_t)*nr_blocks);
+    file->pieces = (struct file_piece_t*)malloc(nr_blocks*sizeof(struct file_piece_t));
 
     for(int i=0;i<nr_blocks; i++) {
-        printf("%d:%d\n",i,nr_blocks);
-        struct file_piece_t *fpiece = file->pieces+i;
-        printf("Marker1:%d\n",i);
-        fpiece->parity = (uint16_t*)malloc(12);
-        printf("Marker1:%d\n",i);
+        
+        struct file_piece_t *fpiece = &(file->pieces[i]);
+        uint16_t* parity;
+        parity = (uint16_t*)malloc(sizeof(uint16_t)*6);
+        fpiece->parity = parity;
         if(i+1 == nr_blocks) {
-            printf("Marker(L):%d\n",i);
             //Last block case
             // Compute remaining blocks
-            size_t remaining = (file_size%(DEFAULT_BLK_SIZE+12))+1;
+            size_t remaining = (file_size%(DEFAULT_BLK_SIZE+12));
             // 13...524 In theory
             remaining -= 12;
             fpiece->blk_size = remaining;
-            count = fread(fpiece->data,1,remaining,file_handle);
         }
         else {
-            printf("Marker(ELSE):%d\n",i);
             fpiece->blk_size = DEFAULT_BLK_SIZE;
-            
-            count = fread(fpiece->data,1,DEFAULT_BLK_SIZE,file_handle);
         }
-        printf("Marker(BP):%d\n",i);
-        count = fread(fpiece->parity, 2,6,file_handle);
-        printf("Marker(AP):%d\n",i);
-        
+        fpiece->data = (void*)malloc(sizeof(char)*fpiece->blk_size);
+        count = fread(fpiece->data,1,fpiece->blk_size,file_handle);
+        count = fread(fpiece->parity, 2,6,file_handle);        
     }
 
     fclose(file_handle);
