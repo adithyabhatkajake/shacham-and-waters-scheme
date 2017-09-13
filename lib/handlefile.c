@@ -32,6 +32,14 @@ static size_t get_file_size(FILE *file)
     return filesize;
 }
 
+static unsigned long long get_nr_blocks(size_t filesize)
+{
+    unsigned long long nr_blocks = (filesize/DEFAULT_BLK_SIZE)+1;
+    if(filesize % DEFAULT_BLK_SIZE == 0)
+        nr_blocks--;
+    return nr_blocks;    
+}
+
 struct file_t* get_file_blocks(char *filename)
 {
     FILE *file_handle = open_file(filename);
@@ -50,11 +58,14 @@ struct file_t* get_file_blocks(char *filename)
     size_t filesize = get_file_size(file_handle);
     
     file_info = (struct file_t*)malloc(sizeof(struct file_t));
-    file_info->nr_blocks = 0;
+    file_info->nr_blocks = get_nr_blocks(filesize);
+
     file_info->pieces = (struct file_piece_t*)
         malloc(sizeof(struct file_piece_t)*
-                ((int)(filesize/DEFAULT_BLK_SIZE)));
+                (file_info->nr_blocks));
     
+    file_info->nr_blocks = 0;
+
     while((count = fread(buffer, 1, DEFAULT_BLK_SIZE, file_handle)) != 0) {
         char *temp_data;
         temp_data = (char*)malloc(DEFAULT_BLK_SIZE);
