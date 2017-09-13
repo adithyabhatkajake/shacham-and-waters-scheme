@@ -14,7 +14,6 @@ static void usage(char *scriptname)
 static bool file_compare(struct file_t f1, struct file_t f2)
 {
     if(f1.nr_blocks != f2.nr_blocks) {
-        fprintf(stderr,"%d|%d nr_blocks not same\n",f1.nr_blocks,f2.nr_blocks);
         return false;
     }
 
@@ -24,13 +23,11 @@ static bool file_compare(struct file_t f1, struct file_t f2)
         fpiece2 = f2.pieces[i];
 
         if(fpiece1.blk_size != fpiece2.blk_size) {
-            fprintf(stderr,"%d[%d|%d] blk_size not same\n",i,fpiece1.blk_size,fpiece2.blk_size);
             return false;
         }
 
         for(int j=0;j<6;j++) {
             if(fpiece1.parity[j]!=fpiece2.parity[j])
-
                 return false;
         }
 
