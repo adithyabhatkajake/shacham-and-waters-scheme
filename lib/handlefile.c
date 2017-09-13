@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 
-#include "handlefile.h"
-
-#define DEFAULT_BLK_SIZE 1024
+#include <handlefile.h>
+#include <rslib.h>
 
 static FILE* open_file(const char* filename)
 {
@@ -47,13 +47,129 @@ struct file_t* get_file_blocks(char *filename)
     if(!buffer)
         die("Unable to allocate buffer memory for reading the file");
 
-    printf("%llu bytes in %s\n",get_file_size(file_handle),filename);
-    file_info = (struct file_t*)malloc(sizeof(struct file_t));
-    while((count = fread(buffer, 1, DEFAULT_BLK_SIZE, file_handle)) != 0) {
-        file_info->blk_size += count;
-    }
-    printf("%llu bytes in %s\n",file_info->blk_size,filename);
+    size_t filesize = get_file_size(file_handle);
     
+    file_info = (struct file_t*)malloc(sizeof(struct file_t));
+    file_info->nr_blocks = 0;
+    file_info->pieces = (struct file_piece_t*)
+        malloc(sizeof(struct file_piece_t)*
+                ((int)(filesize/DEFAULT_BLK_SIZE)));
+    
+    while((count = fread(buffer, 1, DEFAULT_BLK_SIZE, file_handle)) != 0) {
+        char *temp_data;
+        temp_data = (char*)malloc(DEFAULT_BLK_SIZE);
+        memcpy(temp_data,buffer,count);
+        struct file_piece_t *fpiece = file_info->pieces + 
+                                        file_info->nr_blocks;
+        fpiece->data = (void*)temp_data;
+        fpiece->blk_size = count;
+        file_info->nr_blocks++;
+    }
+    
+    // Handle out of memory in the middle
+
     free(buffer);
     return file_info;
+}
+
+void write_file(struct file_t* file, const char* filename)
+{
+    FILE* file_handle = fopen(filename, "wb");
+
+    if(!file_handle)
+        die("Unable to open the file");
+
+    size_t count = 0;
+
+    for(int i=0;i<file->nr_blocks;i++) {
+        struct file_piece_t *fpiece;
+        fpiece = file->pieces+i;
+        count = fwrite((char*)fpiece->data,1,fpiece->blk_size,file_handle );
+        
+        if(count != fpiece->blk_size)
+        die("Unable to write to file");
+        
+        count = fwrite(fpiece->parity,2,6,file_handle);
+        
+        if(count != 6)
+            die("Unable to write to file");
+    }
+
+    fflush(file_handle);
+    fclose(file_handle);
+}
+
+void generate_parity(struct file_t* f)
+{
+    struct rs_control *rs_decoder;
+    rs_decoder = init_rs (10, 0x409, 0, 1, 6);
+
+    for(int i=0;i<f->nr_blocks;i++) {
+        struct file_piece_t *fp = f->pieces+i;
+        
+        for(int j=0;j<fp->blk_size;j++) {
+            unsigned char *byte = fp->data+j;
+        }
+
+        char *parity_data;
+        uint16_t *par = malloc(sizeof(uint16_t)*6);
+        parity_data = (char*)par;
+        memset(par, 0, sizeof(par));
+    
+        encode_rs8(rs_decoder, (unsigned char*)fp->data, fp->blk_size, par, 0);
+
+        fp->parity = par;
+    }
+}
+
+struct file_t* recover_file(const char* filename)
+{
+    FILE* file_handle = open_file(filename);
+
+    if(!file_handle)
+        die("Unable to open the file");
+
+    size_t count = 0;
+
+    size_t file_size = get_file_size(file_handle);
+
+    unsigned long nr_blocks = (int)file_size/(DEFAULT_BLK_SIZE+12);
+    if(file_size % (DEFAULT_BLK_SIZE+12) != 0) {
+        nr_blocks++;
+    }
+
+    struct file_t *file = malloc(sizeof(struct file_t));
+    file->nr_blocks = nr_blocks;
+    file->pieces = malloc(sizeof(struct file_piece_t)*nr_blocks);
+
+    for(int i=0;i<nr_blocks; i++) {
+        printf("%d:%d\n",i,nr_blocks);
+        struct file_piece_t *fpiece = file->pieces+i;
+        printf("Marker1:%d\n",i);
+        fpiece->parity = (uint16_t*)malloc(12);
+        printf("Marker1:%d\n",i);
+        if(i+1 == nr_blocks) {
+            printf("Marker(L):%d\n",i);
+            //Last block case
+            // Compute remaining blocks
+            size_t remaining = (file_size%(DEFAULT_BLK_SIZE+12))+1;
+            // 13...524 In theory
+            remaining -= 12;
+            fpiece->blk_size = remaining;
+            count = fread(fpiece->data,1,remaining,file_handle);
+        }
+        else {
+            printf("Marker(ELSE):%d\n",i);
+            fpiece->blk_size = DEFAULT_BLK_SIZE;
+            
+            count = fread(fpiece->data,1,DEFAULT_BLK_SIZE,file_handle);
+        }
+        printf("Marker(BP):%d\n",i);
+        count = fread(fpiece->parity, 2,6,file_handle);
+        printf("Marker(AP):%d\n",i);
+        
+    }
+
+    fclose(file_handle);
+    return file;
 }
