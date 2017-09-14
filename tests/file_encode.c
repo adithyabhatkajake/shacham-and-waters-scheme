@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <rslib.h>
+#include <logging.h>
 
 static void usage(char *scriptname)
 {

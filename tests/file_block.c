@@ -1,5 +1,6 @@
 #include <handlefile.h>
 #include <stdlib.h>
+#include <logging.h>
 
 static void usage(char *scriptname)
 {
