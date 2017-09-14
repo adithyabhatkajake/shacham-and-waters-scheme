@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <lgging.h>
+#include <logging.h>
 
 #include "bls.h"
 
@@ -13,6 +13,9 @@
 int main(int argc, char const *argv[])
 {
     /* code */
+    log_level = LOG_DEBUG;
+    Log(LOG_BUG,"Log tests: %s","test");
+    Log()
     pairing_t* pairing = init_pairing();
 
     element_t g, h;

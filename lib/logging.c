@@ -3,26 +3,24 @@
 #include <logging.h>
 #include <stdarg.h>
 
-short log_level = LOG_QUIET;
-
-typedef short loglevel;
+loglevel log_level = LOG_QUIET;
 
 static char* log_string(loglevel level)
 {
     switch (level)
     {
-    case 0:
+    case LOG_BUG:
         return "[BUG]";
-    case 1:
+    case LOG_WARNING:
         return "[WARNING]";
-    case 2:
+    case LOG_ERROR:
         return "[ERROR]";
-    case 3:
+    case LOG_QUIET:
         Log(LOG_BUG,"This should not have been executed");
         exit(1);
-    case 4:
+    case LOG_TRACE:
         return "[TRACE]";
-    case 5:
+    case LOG_DEBUG:
         return "[DEBUG]";
     default:
         Log(LOG_ERROR,"Invalid Log Level Passed");
@@ -37,15 +35,19 @@ void Log(loglevel level,const char* format, ...)
      *      paramter?
      */
     if(level == LOG_QUIET) {
-        Log(LOG_WARNING,"Invalid Log String passed");
+        Log(LOG_WARNING,"Log String LOG_QUIET must not be passed");
         return;
     }
 
     if(level <= log_level) {
-        printf("%10s|",log_string(level));
-        va_list(args);
+        va_list args;
+
+        printf("%-10s|",log_string(level));
+
         va_start(args,format);
-        printf(format,args);
+        vprintf(format,args);
+        va_end(args);
+
         printf("\n");
     }
 }
