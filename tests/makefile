@@ -3,7 +3,8 @@ CFLAGS =
 INCLUDES = -I ../include/
 LIBS = -lrs -lgmp -lpbc
 
-SRCS := reed-solomon.c file_block.c file_encode.c write_test.c
+SRCS := reed-solomon.c file_block.c file_encode.c write_test.c \
+		log_tests.c
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all
@@ -47,5 +48,11 @@ blstest.o: ../lib/bls.o blstest.c ../lib/logging.c
 	./$@
 	@echo "==========================="
 
+log_tests.o: ../lib/logging.o log_tests.c
+	@echo "==========================="
+	@echo "Running BLS Tests:"
+	$(CC) $(FLAGS) $(INCLUDES) $(LIBS) $^ -o $@ $(LIBS)
+	./$@
+	@echo "==========================="
 clean: 
 	rm -f *.o

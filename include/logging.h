@@ -2,16 +2,18 @@
 
 #include <stdio.h>
 
-#define LOG_BUG     0
-#define LOG_WARNING 1
-#define LOG_ERROR   2
-#define LOG_QUIET   3
-#define LOG_TRACE   4
-#define LOG_DEBUG   5
+enum log_level_t {
+    LOG_BUG,
+    LOG_WARNING,
+    LOG_ERROR,
+    LOG_QUIET,
+    LOG_TRACE,
+    LOG_DEBUG,
+};
 
-extern short log_level;
+extern enum log_level_t log_level;
 
-typedef short loglevel;
+typedef enum log_level_t loglevel;
 
 void Log(loglevel level,const char* format, ...);
 
