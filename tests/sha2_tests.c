@@ -1,9 +1,25 @@
 #include <string.h>
+#include <stdlib.h>
 
 #include <logging.h>
-#include <sha2.h>
+#include <sha256.h>
+#include <print-utils.h>
 
 #define TEST_ITEMS 6
+
+static int byte_compare(unsigned char* src1,unsigned char* src2, int len)
+{
+    int i = 0;
+    while(i < len) {
+        int flag = src1[i]-src2[i];
+        if(flag != 0) {
+            printf("%u %u\n",src1[i],src2[i]);
+            return flag;
+        }
+        i++;
+    }
+    return 0;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -23,7 +39,7 @@ int main(int argc, char const *argv[])
         "\0\0"
     };
     // Generated using in built sha256 program 
-    char* expected_hashes[] = {
+    unsigned char* expected_hashes[] = {
         "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
         "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
         "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", //Curiously 3 and 6 have the same hashes
@@ -36,13 +52,14 @@ int main(int argc, char const *argv[])
     };
     
     for(int i=0;i<TEST_ITEMS;i++) {
-        SHA256_CTX	ctx256;
-        SHA256_Init(&ctx256);
-        char buffer[256];
-        SHA256_Update(&ctx256, test_string[i],string_lengths[i]);
-        SHA256_End(&ctx256, buffer);
+        sha256_hash_t buffer[32];
+        sha256(buffer,test_string[i],8*string_lengths[i]);
+        //print_hex(buffer,32);
+        //printf("%s\n",expected_hashes[i]);
         printf("Hashing Test[%d]:  ",i);
-        printf("%s\n",strcmp(expected_hashes[i],buffer)==0?"Passed":"Failed");
+        char* string = hexstring((unsigned char*)buffer,32);
+        printf("%s\n",byte_compare(expected_hashes[i],string,32)==0?"Passed":"Failed");
+        free(string);
     }
 
     return 0;

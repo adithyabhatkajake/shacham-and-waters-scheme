@@ -4,56 +4,42 @@ INCLUDES = -I ../include/
 LIBS = -lrs -lgmp -lpbc
 
 SRCS := reed-solomon.c file_block.c file_encode.c write_test.c \
-		log_tests.c sha2_tests.c
+		log_tests.c sha2_tests.c blstest.c
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all
 
+VPATH = ../lib
+
 all: $(OBJS) $(SRCS) makefile
 
-reed-solomon.o: reed-solomon.c ../lib/logging.c
-	@echo -e "Running Reed Solomon Tests:\n"
-	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
+reed-solomon.o: reed-solomon.c logging.c
+	@$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@ 
-	@echo "Reed Solomon Tests Passed"
-	@echo ""
 
-file_block.o: ../lib/handlefile.o file_block.c ../lib/logging.c
-	@echo -e "Running Handle File Tests:\n"
+file_block.o: handlefile.c file_block.c logging.c
 	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@ ../LICENSE
-	@echo "File Handling Tests Passed"
-	@echo ""
 
-file_encode.o: ../lib/handlefile.o file_encode.c ../lib/logging.c
-	@echo -e "Running Encode File Tests:\n"
+file_encode.o: handlefile.c file_encode.c logging.c
 	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@ ../LICENSE
-	@echo ""
 
-write_test.o: ../lib/handlefile.o write_test.c ../lib/logging.c
-	@echo -e "Running File Write Tests:\n"
+write_test.o: handlefile.c write_test.c logging.c
 	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@ ../LICENSE
-	@echo ""
 
-blstest.o: ../lib/bls.o blstest.c ../lib/logging.c
-	@echo -e "Running BLS Tests:\n"
+blstest.o: bls.c blstest.c logging.c
 	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@
-	@echo ""
 
-log_tests.o: ../lib/logging.o log_tests.c
-	@echo -e "Running Logger Tests:\n"
+log_tests.o: logging.c log_tests.c
 	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@
-	@echo ""
 
-sha2_tests.o: ../lib/sha2.o sha2_tests.c
-	@echo -e "Running SHA256 Hashing Tests:\n"
+sha2_tests.o: sha256.c print-utils.c sha2_tests.c
 	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@ $(LIBS)
 	@./$@
-	@echo ""
 
 clean: 
 	rm -f *.o

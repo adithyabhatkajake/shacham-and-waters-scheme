@@ -24,23 +24,6 @@
 "4819692632040479575042834043863089\n"\
 "l 1340"
 
-struct bls_private_key {
-    element_t private_key;
-    pairing_t pairing;
-};
-
-struct bls_public_key {
-    element_t public_key;
-    pairing_t pairing;
-    element_t g;
-    element_t h;
-};
-
-struct bls_keypair {
-    struct bls_public_key pubkey;
-    struct bls_private_key privkey;
-};
-
 int verify_signature(pairing_t pairing,
     element_t group1, element_t group2,
     element_t signature,
@@ -55,8 +38,4 @@ static inline pairing_t* init_pairing()
     return pairing;
 }
 //extern element_t g,h,secret_key, public_key;
-struct bls_private_key* bls_pk_gen(element_t generator);
-
-void bls_sign(struct bls_private_key bls_pkey); 
-
-struct bls_keypair* bls_keypair_gen(void);
+element_t* bls_hash(void*,int,pairing_t);

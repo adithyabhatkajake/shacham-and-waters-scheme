@@ -2,8 +2,9 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <pbc/pbc.h>
 
-#define DEFAULT_BLK_SIZE 512
+#define DEFAULT_BLK_SIZE 128
 
 struct file_piece_t {
     void                 *data;
