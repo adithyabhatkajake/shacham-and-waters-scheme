@@ -4,7 +4,8 @@ INCLUDES = -I include/
 LIBS = -lrs -lgmp -pbc
 
 LIB_DIR   := lib
-LIB_SRCS  := handlefile.c bls.c logging.c
+LIB_SRCS  := handlefile.c bls.c logging.c sha256.c \
+			 hmac-sha256.c print-utils.c sha256.c	
 LIB_OBJS  := $(addprefix $(LIB_DIR)/, $(LIB_SRCS:.c=.o))
 
 .PHONY: all
@@ -22,5 +23,6 @@ print-%:
 	@echo '$*=$($*)'
 
 clean: 
-	$(RM) $(LIB_DIR)/*.o
+	@$(RM) $(LIB_DIR)/*.o
+	@$(RM) *-TEST
 	make -C tests/ clean

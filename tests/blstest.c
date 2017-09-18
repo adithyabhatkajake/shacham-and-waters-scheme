@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
     /* code */
     log_level = LOG_DEBUG;
     Log(LOG_BUG,"Log tests: %s","test");
-    Log()
+
     pairing_t* pairing = init_pairing();
 
     element_t g, h;
@@ -32,12 +32,20 @@ int main(int argc, char const *argv[])
     element_random(g);
     element_random(secret_key);
 
+    
     element_pow_zn(public_key, g, secret_key);
-
+    
     // MD5 sum of "hello"
     element_from_hash(h, (void*)"b1946ac92492d2347c6235b4d2611184", 32);
+    printf("Pairing is symmetric?:%d\n",pairing_is_symmetric(*pairing));
 
     element_pow_zn(sig, h, secret_key);
+
+    element_printf("g is %B\n",g);
+    element_printf("h is %B\n",h);
+    element_printf("Public Key is %B\n",public_key);
+    element_printf("Private Key is %B\n",secret_key);
+    element_printf("Signature is %B\n",sig);
 
     printf("Signature Check:%s\n", 
     verify_signature(*pairing,h,g,sig,public_key)==SIGN_OK?"Pass":"Failed");
