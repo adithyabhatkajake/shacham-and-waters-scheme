@@ -1,3 +1,10 @@
+/* 
+ * Copyright (C) Indian Statistical Institute, Applied Statistical Unit - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Adithya Bhat <dth.bht@gmail.com>, September 2017
+ */
+
 #pragma once
 
 void print_hex(unsigned char*,int);

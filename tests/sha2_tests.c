@@ -1,9 +1,10 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-#include <logging.h>
-#include <sha256.h>
-#include <print-utils.h>
+#include "logging.h"
+#include "sha256.h"
+#include "print-utils.h"
 
 #define TEST_ITEMS 6
 

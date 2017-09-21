@@ -1,4 +1,6 @@
-#include <logging.h>
+#include <stdio.h>
+
+#include "logging.h"
 
 static void print_all_logs()
 {

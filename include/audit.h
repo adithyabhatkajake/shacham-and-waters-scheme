@@ -1,26 +1,85 @@
+/* 
+ * Copyright (C) Indian Statistical Institute, Applied Statistical Unit - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Adithya Bhat <dth.bht@gmail.com>, September 2017
+ */
+
 #pragma once
-#include <pbc/pbc.h>
+
+/*
+ * audit.h
+ * Contains function prototypes and data structures 
+ *  used in auditing and verifying storage blocks.
+ */
+
+#include <pbc/pbc.h>    // For the pairing, element_t definitions.
+#include <stdint.h>     // For uint32_t definitions.
+
+#include "handlefile.h" // For struct file_piece_t definitions
+
+enum audit_result {
+    PASS,
+    FAIL,
+};
 
 struct __tag_param {
-    pairing_t pairing;
-    element_t alpha;
-    struct file_piece_t *fpiece;
-    int index;
-    element_t secret_x;
+    struct file_piece_t* fpiece;    // An encoded file segment.
+    pairing_t            pairing;   // The pairing (p,g,G,GT,e).
+    element_t            alpha;     // A generator of G.
+    element_t            secret_x;  // A secret value x in Zp.
+    uint32_t             index;     // The spatial position of the file block.
 };
 
 typedef struct __tag_param tag_param_t;
 
-struct tag_t {
-    pairing_t pairing;
-    int index;
-    element_t sigma;
-};
-
+/*
+ *  define function generate_tag():
+ *  The function generates a tag structure for a Reed
+ *  Solomon encoded file, that will be used to verify 
+ *  the contents of the file and for auditing 
+ *  challenges.
+ *@param
+ *  tag_param_t: Parameters
+ *  To generate the cryptographic tag for the file,
+ *  some cryptographic parameters need to be provided.
+ *@return
+ *  tag_t: Tag
+ *  It returns a tag_t structure holding the tag value
+ *  sigma for the file block.
+ */
 struct tag_t* generate_tag(tag_param_t*);
 
-struct _setup {
-    pairing_t pairing;
-    element_t g;
+/*
+ *  define function set_tags():
+ *  The function takes a file_t structure and generates 
+ *  tags for the file's pieces and set's them to the 
+ *  corresponding file piece' sigma.
+ *@param
+ *  struct file_t*: file
+ *  The file structure for whose blocks tags need to 
+ *  be generated.
+ *  tag_param_t*: parameters
+ *  The parameters to generate the tag
+ *@return
+ *  Returns nothing. Errors will be logged by the 
+ *  function.
+ */
+void set_tags(struct file_t* file, tag_param_t* params);
+
+struct query_t {
+    uint32_t            query_length;   // Number of query tests
+    uint32_t*           indices;        // An array of indices
+    struct pairing_s*   pairing;        // The pairing in which the operations are performed
+    struct element_s*   nu;             // An array of nu elements
 };
 
+struct query_response_t {
+    struct pairing_s*   pairing;
+    element_t           sigma;
+    element_t           mu;
+};
+
+struct query_response_t* query(struct file_t* file,struct query_t query);
+
+enum audit_result verify_storage(struct file_t*, struct query_response_t,struct query_t,element_t,element_t,element_t);
