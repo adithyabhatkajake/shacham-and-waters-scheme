@@ -1,4 +1,19 @@
+/* 
+ * Copyright (C) Indian Statistical Institute, Applied Statistical Unit - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Adithya Bhat <dth.bht@gmail.com>, September 2017
+ */
+
 #pragma once
+
+/*
+ * bls.h
+ * Contains function prototypes and data structures 
+ *  used in BLS hashing, signatures and verification 
+ *  in the program.
+ */
+
 
 #include <pbc/pbc.h>
 #include <stdlib.h>
@@ -6,6 +21,13 @@
 
 #define SIGN_OK 1
 #define SIGN_FAIL 0
+
+/*
+ *  a1_param:
+ *  A type of parameter specificed in the Stanford 
+ *  Crypto Library that is symmetric and produces
+ *  efficient pairings.
+ */
 
 #define a1_param "type a1\n"\
 "p 48512875896303752499712277254589628516419352"\
@@ -24,18 +46,14 @@
 "4819692632040479575042834043863089\n"\
 "l 1340"
 
+/*
+ * 
+ */
 int verify_signature(pairing_t pairing,
     element_t group1, element_t group2,
     element_t signature,
     element_t public_key);
 
-static inline pairing_t* init_pairing()
-{
-    pairing_t *pairing;
-    pairing = (pairing_t*)malloc(sizeof(pairing_t));
-    
-    pairing_init_set_buf(*pairing, a1_param, strlen(a1_param));
-    return pairing;
-}
+#define INIT_PAIRING(pairing) (pairing_init_set_buf(*pairing, a1_param, strlen(a1_param)));
 //extern element_t g,h,secret_key, public_key;
 element_t* bls_hash(void*,int,pairing_t);
