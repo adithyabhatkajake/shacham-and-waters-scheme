@@ -5,5 +5,5 @@ before_install:
 - git clone https://github.com/tierney/reed-solomon.git && cd reed-solomon && ./autogen.sh && ./configure && make && sudo make install && cd -
 - wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz && tar -xf pbc-0.5.14.tar.gz && cd pbc-0.5.14 && ./configure && make && sudo make install && cd -
 compiler:
-- gcc-5
+- gcc -std=c99
 script: make && make tests
