@@ -1,9 +1,9 @@
 language: c
-compiler:
-- gcc-4.8
 before_install:
 - sudo apt-get update -qq
-- sudo apt-get install -qq libgmp3-dev git
+- sudo apt-get install -qq libgmp3-dev git gcc-5
 - git clone https://github.com/tierney/reed-solomon.git && cd reed-solomon && ./autogen.sh && ./configure && make && sudo make install && cd -
 - wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz && tar -xf pbc-0.5.14.tar.gz && cd pbc-0.5.14 && ./configure && make && sudo make install && cd -
+compiler:
+- gcc-5
 script: make && make tests
