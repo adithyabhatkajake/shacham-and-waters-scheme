@@ -7,7 +7,7 @@ static void usage(char *scriptname)
     fprintf(stderr, "Usage: <%s> <Filename>",scriptname);
 }
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     if(argc != 2) {
         fprintf(stderr, "[Error][1]: Incorrect Number of arguments\n");
@@ -26,4 +26,6 @@ void main(int argc, char *argv[])
     }
     free(f->pieces);
     free(f);
+    
+    return 0;
 }

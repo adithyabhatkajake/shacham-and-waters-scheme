@@ -42,7 +42,7 @@ static bool file_compare(struct file_t f1, struct file_t f2)
     return true;
 }
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     if(argc != 2) {
         fprintf(stderr, "[Error][1]: Incorrect Number of arguments\n");
@@ -67,4 +67,6 @@ void main(int argc, char *argv[])
         "Recovered File Blocks:%d\n",
         f->nr_blocks, f2->nr_blocks);
     printf("Big Result(Drum rolls:%s)\n",file_compare(*f,*f2)==true?"true":"false");
+
+    return 0;
 }

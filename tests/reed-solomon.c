@@ -11,7 +11,7 @@ static void print_hex(unsigned char *bytes, int len)
     printf("\n");
 }
 
-void main() 
+int main() 
 {
     rs_decoder = init_rs (10, 0x409, 0, 1, 6);
 
@@ -60,4 +60,6 @@ void main()
     print_hex(parity_data,12);
 
     free_rs(rs_decoder);
+
+    return 0;
 }
