@@ -60,11 +60,11 @@ int main(int argc, char *argv[])
     write_file(f,output_file);
     printf("Output written to \"%s\"\n",output_file);
 
-    printf("File Blocks: %d\n",f->nr_blocks);
+    printf("File Blocks: %llu\n",f->nr_blocks);
 
     struct file_t *f2 = recover_file(output_file);
-    printf("Original File Blocks: %d\n"
-        "Recovered File Blocks:%d\n",
+    printf("Original File Blocks: %llu\n"
+        "Recovered File Blocks:%llu\n",
         f->nr_blocks, f2->nr_blocks);
     printf("Big Result(Drum rolls:%s)\n",file_compare(*f,*f2)==true?"true":"false");
 
