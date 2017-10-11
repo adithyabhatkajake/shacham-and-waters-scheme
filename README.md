@@ -1,4 +1,4 @@
-# shacham-and-waters-scheme [!Build Status](https://travis-ci.org/adithyabhatkajake/shacham-and-waters-scheme.png)
+# shacham-and-waters-scheme ![Build Status](https://travis-ci.org/adithyabhatkajake/shacham-and-waters-scheme.png)
 An implementation of Shacham and Waters Proofs of Retrievability Scheme with private verification using Stanford's PBC library.
 
 ------------
