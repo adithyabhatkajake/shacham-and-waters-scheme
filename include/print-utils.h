@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "logging.h"
+
 void print_hex(unsigned char*,int);
 
 void println(char*,...);

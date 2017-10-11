@@ -19,8 +19,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SIGN_OK 1
-#define SIGN_FAIL 0
+#define SIGN_OK     1
+#define SIGN_FAIL   0
 
 /*
  *  a1_param:
@@ -47,13 +47,24 @@
 "l 1340"
 
 /*
- * 
+ *  TO:DO
+ *  1. Clean the paramters
+ *  2. Add documentation
  */
 int verify_signature(pairing_t pairing,
     element_t group1, element_t group2,
     element_t signature,
     element_t public_key);
 
+/*
+ *  A macro to initialize pairing to the correct
+ *  curve.
+ */    
 #define INIT_PAIRING(pairing) (pairing_init_set_buf(*pairing, a1_param, strlen(a1_param)));
-//extern element_t g,h,secret_key, public_key;
+
+/*
+ *  TO:DO
+ *  1. Clean the paramters
+ *  2. Add documentation
+ */
 element_t* bls_hash(void*,int,pairing_t);

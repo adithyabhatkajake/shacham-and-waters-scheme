@@ -73,3 +73,8 @@ void Log(loglevel level,const char* format, ...);
 static inline void set_loglevel(loglevel level) {
     log_level = level;
 }
+
+static inline void logline(int line)
+{
+    Log(log_level,"Logging Line:%d\n",line);
+}
