@@ -17,7 +17,7 @@ void main(int argc, char *argv[])
     struct file_t *f = get_file_blocks(argv[1]);
     for(int i=0;i<f->nr_blocks;i++) {
         struct file_piece_t fp = f->pieces[i];
-        printf("Block:%d:%d\n",i,fp.blk_size);
+        printf("Block:%d:%llu\n",i,fp.blk_size);
         for(int j=0;j<fp.blk_size;j++) {
             unsigned char *byte = fp.data+j;
             printf("%02x",*byte);
