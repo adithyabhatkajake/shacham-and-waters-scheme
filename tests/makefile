@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = 
+CFLAGS = -std=c99
 INCLUDES = -I ../include/
 LIBS = -lrs -lgmp -lpbc
 
