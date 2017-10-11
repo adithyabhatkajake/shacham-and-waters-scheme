@@ -2,6 +2,6 @@ language: c
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install -qq libgmp3-dev git
-- git clone https://github.com/tierney/reed-solomon.git && cd reed-solomon && ./autogen.sh && ./configure && make && sudo make install
-- wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz && tar -xf pbc-0.5.14.tar.gz && cd pbc-0.5.14 && ./configure && make && sudo make install
+- git clone https://github.com/tierney/reed-solomon.git && cd reed-solomon && ./autogen.sh && ./configure && make && sudo make install && cd -
+- wget https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz && tar -xf pbc-0.5.14.tar.gz && cd pbc-0.5.14 && ./configure && make && sudo make install && cd -
 script: make && make tests
