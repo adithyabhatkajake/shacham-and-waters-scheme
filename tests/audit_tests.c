@@ -7,7 +7,7 @@
 
 void main(int argc, char *argv[])
 {
-    log_level = LOG_QUIET;
+    log_level = LOG_DEBUG;
     struct file_t *f = get_file_blocks(argv[1]);
     //pairing_t* pairing = init_pairing();
 

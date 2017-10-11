@@ -20,12 +20,17 @@ static inline char* hexstring(unsigned char* bytes, int len)
 int main(int argc, char* argv[])
 {
     /* code */
+    log_level = LOG_TRACE;
+
     if(argc  !=  2) {
         fprintf(stderr,"Incorrect usage: %s <filename>\n",argv[0]);
         exit(1);
     }
 
-    pairing_t* pairing = init_pairing();
+    Log(LOG_TRACE,"%s:[%d]",__FUNCTION__,argc);
+
+    pairing_t* pairing = malloc(sizeof(pairing_t));
+    INIT_PAIRING(pairing);
 
     element_t g, h;
     element_t public_key, secret_key;
@@ -33,8 +38,10 @@ int main(int argc, char* argv[])
 
     element_init_Zr(g, *pairing);
 
-    log_level = LOG_TRACE;
-
+    /*
+     *  log_level = LOG_TRACE;
+     */
+    Log(LOG_TRACE,"%s",argv[1]);
     struct file_t* file = get_file_blocks(argv[1]);
     for(int i=0;i<file->nr_blocks;i++) {
         struct file_piece_t* fpiece = file->pieces+i;
@@ -43,11 +50,16 @@ int main(int argc, char* argv[])
         mpz_init(integer);
         char* string = hexstring(data,fpiece->blk_size);
         int k = mpz_set_str(integer,string,16);
-        Log(LOG_TRACE,"%s\n%d",string,k);
+        if(k) {
+            Log(LOG_ERROR,"Could not set long integer from file data");
+            exit(1);
+        }
+        Log(LOG_TRACE,"Data[%s]",string,k);
         element_set_mpz(g,integer);
-        element_printf("%B\n",g);
+        element_printf("Element[%B]\n",g);
         free(string);
     }
+
     free(pairing);
     free(file);
 

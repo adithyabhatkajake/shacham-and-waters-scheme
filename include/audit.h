@@ -75,11 +75,35 @@ struct query_t {
 };
 
 struct query_response_t {
-    struct pairing_s*   pairing;
-    element_t           sigma;
-    element_t           mu;
+    struct pairing_s*   pairing;        // The pairing used
+    element_t           sigma;          // The sigma for the query
+    element_t           mu;             // The mu for the query
 };
 
+/*
+ *  define function query():
+ *  The function takes a file information structure
+ *  and a query parameter to build and perform query
+ *  on the file.
+ *  It basically takes (i,vi) in Q, and generates a 
+ *  sigma and nu for the query.
+ *@param
+ *  struct file_t*: file
+ *  The file structure pointer for whose blocks the 
+ *  query needs to be generated.
+ *  struct query_t: query
+ *  The query parameters to generate the tag on the
+ *  file.
+ *@return
+ *  struct query_response_t*:
+ *  Given the file and the query, the function returns
+ *  a response to the query with (sigma,nu)
+ */
 struct query_response_t* query(struct file_t* file,struct query_t query);
 
+/*
+ *  TO:DO
+ *  1. Clean the paramters
+ *  2. Add documentation
+ */
 enum audit_result verify_storage(struct file_t*, struct query_response_t,struct query_t,element_t,element_t,element_t);
