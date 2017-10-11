@@ -64,36 +64,36 @@ struct query_response_t* query(struct file_t* file,struct query_t query_obj)
      *  code
      */
     response->pairing = query_obj.pairing;
-    Log(LOG_TRACE,"Entering Function");
+    logline(__LINE__);
     struct pairing_s* pairing = query_obj.pairing;
-    Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+    logline(__LINE__);
     element_init_G1(response->sigma,pairing);
-    Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+    logline(__LINE__);
     element_set1(response->sigma);
-    Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+    logline(__LINE__);
     element_init_Zr(response->mu,pairing);
-    Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+    logline(__LINE__);
     for(uint32_t i = 0;i < query_obj.query_length;i++) {
         element_t temp;
         element_init_G1(temp,query_obj.pairing);
-        Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+        logline(__LINE__);
         element_pow_zn(temp,
             file->pieces[query_obj.indices[i]].tag->sigma,query_obj.nu+i);
-        Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+        logline(__LINE__);
         element_mul(response->sigma,temp,response->sigma);
         mpz_t integer;
-        Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+        logline(__LINE__);
         mpz_init_set_str(
             integer,
             hexstring(file->pieces[query_obj.indices[i]].data,
                             file->pieces[query_obj.indices[i]].blk_size),
             16);
-        Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+        logline(__LINE__);
         element_init_Zr(temp,query_obj.pairing);
         element_set_mpz(temp,integer);
         element_mul(temp,temp,query_obj.nu+i);
         element_add(response->mu,response->mu,temp);
-        Log(LOG_TRACE,"Entering LINE %d",__LINE__);
+        logline(__LINE__);
         mpz_clear(integer);
         //element_free(temp);
     }

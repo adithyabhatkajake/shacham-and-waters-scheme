@@ -5,9 +5,9 @@
 #include <audit.h>
 #include <handlefile.h>
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    log_level = LOG_QUIET;
+    log_level = LOG_DEBUG;
     struct file_t *f = get_file_blocks(argv[1]);
     //pairing_t* pairing = init_pairing();
 
@@ -49,4 +49,6 @@ void main(int argc, char *argv[])
 
     int result = verify_storage(f,*response,query_obj,g,params.alpha,pubkey);
     printf("Response: %d\n",result);
+
+    return 0;
 }

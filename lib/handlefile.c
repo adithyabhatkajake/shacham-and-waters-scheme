@@ -13,6 +13,8 @@ static FILE* open_file(const char* filename)
         Log(LOG_ERROR,"Null Filename passed to open_file");
         return NULL;
     }
+
+    Log(LOG_TRACE,"%s:[%s]\n",__FUNCTION__,filename);
     
     FILE *file = fopen(filename, "r");
     
@@ -28,6 +30,8 @@ static size_t get_file_size(FILE *file)
         Log(LOG_ERROR,"Invalid(NULL) File pointer passed");
         return 0;
     }
+
+    Log(LOG_TRACE,"%s:[%p]\n",__FUNCTION__,file);
 
     long initial_pos = ftell(file);
     size_t filesize = -1;
@@ -49,6 +53,8 @@ static unsigned long long get_nr_blocks(size_t filesize)
     if(!filesize)
         Log(LOG_WARNING,"Zero Filesize passed");
     
+    Log(LOG_TRACE,"%s:[%lu]\n",__FUNCTION__,filesize);
+
     unsigned long long nr_blocks;
 
     nr_blocks = (filesize/DEFAULT_BLK_SIZE)+1;
@@ -64,6 +70,8 @@ struct file_t* get_file_blocks(char *filename)
         Log(LOG_ERROR,"Invalid Filename passed");
         return NULL;
     }
+
+    Log(LOG_TRACE,"%s:[%s]\n",__FUNCTION__,filename);
 
     FILE *file_handle;
     file_handle = open_file(filename);
@@ -88,7 +96,7 @@ struct file_t* get_file_blocks(char *filename)
     size_t filesize = get_file_size(file_handle);
     
     if(!filesize) {
-        Log(LOG_WARNING,"Filesize of %s is zero");
+        Log(LOG_WARNING,"Filesize of %s is zero",filename);
     }
     
     file_info = (struct file_t*)malloc(sizeof(struct file_t));
@@ -154,6 +162,8 @@ void write_file(struct file_t* file, const char* filename)
         return;
     }
 
+    Log(LOG_TRACE,"%s:[%p,%s]\n",__FUNCTION__,file,filename);
+
     FILE* file_handle = fopen(filename, "wb");
 
     if(!file_handle) {
@@ -187,6 +197,8 @@ void generate_parity(struct file_t* f)
         Log(LOG_ERROR,"Invalid(Null) parameter(s) passed to generate parity");
         return;
     }
+
+    Log(LOG_TRACE,"%s:[%p]\n",__FUNCTION__,f);
 
     struct rs_control *rs_decoder = NULL;
     rs_decoder = init_rs (10, 0x409, 0, 1, 6);
@@ -237,6 +249,8 @@ struct file_t* recover_file(const char* filename)
         Log(LOG_ERROR,"Invalid(Null) filename passed to recover file");
         return NULL;
     }
+
+    Log(LOG_TRACE,"%s:[%s]\n",__FUNCTION__,filename);
 
     FILE* file_handle = open_file(filename);
 

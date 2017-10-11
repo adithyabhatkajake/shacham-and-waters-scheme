@@ -1,11 +1,17 @@
 CC = gcc
-CFLAGS = -g
+CFLAGS = -g -std=c99
 INCLUDES = -I include/
 LIBS = -lrs -lgmp -pbc
 
 LIB_DIR   := lib
-LIB_SRCS  := handlefile.c bls.c logging.c sha256.c \
-			 hmac-sha256.c print-utils.c sha256.c	
+LIB_SRCS  := audit.c 		\
+			 bls.c			\
+			 handlefile.c	\
+			 hmac-sha256.c 	\
+			 logging.c		\
+			 print-utils.c	\
+			 sha256.c		
+			 
 LIB_OBJS  := $(addprefix $(LIB_DIR)/, $(LIB_SRCS:.c=.o))
 
 .PHONY: all
