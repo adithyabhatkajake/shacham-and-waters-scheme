@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "logging.h"
-#include "sha256.h"
-#include "print-utils.h"
+#define TARGET "SHA256 Tests"
+
+#include <print-utils.h>
+#include <logging.h>
+#include <sha256.h>
+#include <test.h>
 
 #define TEST_ITEMS 6
 
@@ -24,6 +27,7 @@ static int byte_compare(unsigned char* src1,unsigned char* src2, int len)
 
 int main(int argc, char const *argv[])
 {
+    INIT_TEST();
     /* 
      *  You can add more entries to this test.
      *  Run `printf "Test string" > testfile.txt`
@@ -62,6 +66,8 @@ int main(int argc, char const *argv[])
         printf("%s\n",byte_compare(expected_hashes[i],string,32)==0?"Passed":"Failed");
         free(string);
     }
+
+    EXIT_TEST();
 
     return 0;
 }

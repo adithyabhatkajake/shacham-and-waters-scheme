@@ -1,13 +1,13 @@
-#define TARGET "BLS"
+#define TARGET "BLS Tests"
 
 #include <pbc/pbc.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <logging.h>
-#include <bls.h>
 #include <test.h>
+#include <bls.h>
 
 /**
  *  Program to verify BLS Signatures

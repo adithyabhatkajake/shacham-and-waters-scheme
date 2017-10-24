@@ -1,6 +1,10 @@
-#include <handlefile.h>
 #include <stdlib.h>
+
+#define TARGET "File block IO Tests"
+
+#include <handlefile.h>
 #include <logging.h>
+#include <test.h>
 
 static void usage(char *scriptname)
 {
@@ -9,6 +13,8 @@ static void usage(char *scriptname)
 
 int main(int argc, char *argv[])
 {
+    INIT_TEST();
+
     if(argc != 2) {
         fprintf(stderr, "[Error][1]: Incorrect Number of arguments\n");
         usage(argv[0]);
@@ -27,5 +33,7 @@ int main(int argc, char *argv[])
     free(f->pieces);
     free(f);
     
+    EXIT_TEST();
+
     return 0;
 }

@@ -1,6 +1,9 @@
 #include <stdio.h>
 
-#include "logging.h"
+#define TARGET "Logging Tests"
+
+#include <logging.h>
+#include <test.h>
 
 static void print_all_logs()
 {
@@ -16,10 +19,15 @@ static void print_all_logs()
 int main(int argc, char const *argv[])
 {
     /* code */
+    INIT_TEST();
+
     for(loglevel i=LOG_QUIET;i<=(LOG_DEBUG);i++) {
         log_level = i;
         print_all_logs();
         printf("\n");
     }
+
+    EXIT_TEST();
+
     return 0;
 }

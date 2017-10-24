@@ -3,8 +3,11 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define TARGET "File IO Tests"
+
 #include <handlefile.h>
 #include <rslib.h>
+#include <test.h>
 
 static void usage(char *scriptname)
 {
@@ -44,6 +47,9 @@ static bool file_compare(struct file_t f1, struct file_t f2)
 
 int main(int argc, char *argv[])
 {
+
+    INIT_TEST();
+
     if(argc != 2) {
         fprintf(stderr, "[Error][1]: Incorrect Number of arguments\n");
         usage(argv[0]);
@@ -67,6 +73,8 @@ int main(int argc, char *argv[])
         "Recovered File Blocks:%llu\n",
         f->nr_blocks, f2->nr_blocks);
     printf("Big Result(Drum rolls:%s)\n",file_compare(*f,*f2)==true?"true":"false");
+
+    EXIT_TEST();
 
     return 0;
 }

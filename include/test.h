@@ -11,12 +11,12 @@
 #define INIT_TEST() do { \
     printf("Running %s Test:\n",TARGET);\
 }\
-while(0);
+while(0)
 #endif
 
 #ifdef TARGET
 #define EXIT_TEST() do {\
     printf("%s Test completed successfully.\n",TARGET);\
 }\
-while(0);
+while(0)
 #endif

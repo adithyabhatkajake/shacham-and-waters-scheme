@@ -1,8 +1,12 @@
-#include <handlefile.h>
 #include <stdlib.h>
 #include <string.h>
-#include <rslib.h>
+
+#define TARGET "File encoding Tests"
+
+#include <handlefile.h>
 #include <logging.h>
+#include <rslib.h>
+#include <test.h>
 
 static void usage(char *scriptname)
 {
@@ -11,6 +15,9 @@ static void usage(char *scriptname)
 
 int main(int argc, char *argv[])
 {
+
+    INIT_TEST();
+
     if(argc != 2) {
         fprintf(stderr, "[Error][1]: Incorrect Number of arguments\n");
         usage(argv[0]);
@@ -47,6 +54,8 @@ int main(int argc, char *argv[])
 
     //free(f->pieces);
     free(f);
+
+    EXIT_TEST();
 
     return 0;
 }

@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TARGET "File element in Zp Tests"
+
 #include <handlefile.h>
 #include <logging.h>
+#include <test.h>
 #include <bls.h>
 
 static inline char* hexstring(unsigned char* bytes, int len)
@@ -20,6 +23,8 @@ static inline char* hexstring(unsigned char* bytes, int len)
 int main(int argc, char* argv[])
 {
     /* code */
+    INIT_TEST();
+
     log_level = LOG_TRACE;
 
     if(argc  !=  2) {
@@ -62,6 +67,8 @@ int main(int argc, char* argv[])
 
     free(pairing);
     free(file);
+
+    EXIT_TEST();
 
     return 0;
 }

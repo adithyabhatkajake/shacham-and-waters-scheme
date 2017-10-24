@@ -2,6 +2,10 @@
 #include <rslib.h>
 #include <string.h>
 
+#define TARGET "Reed Solomon Tests"
+
+#include <test.h>
+
 static struct rs_control *rs_decoder;
 
 static void print_hex(unsigned char *bytes, int len)
@@ -13,6 +17,9 @@ static void print_hex(unsigned char *bytes, int len)
 
 int main() 
 {
+
+    INIT_TEST();
+
     rs_decoder = init_rs (10, 0x409, 0, 1, 6);
 
     int blocks = 32;
@@ -61,6 +68,8 @@ int main()
     print_hex(parity_data,12);
 
     free_rs(rs_decoder);
+
+    EXIT_TEST();
 
     return 0;
 }

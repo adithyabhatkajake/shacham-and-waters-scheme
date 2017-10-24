@@ -1,5 +1,8 @@
+#define TARGET "Audit Tests"
+
 #include <stdio.h>
 
+#include <test.h>
 #include <logging.h>
 #include <bls.h>
 #include <audit.h>
@@ -7,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+    INIT_TEST();
     log_level = LOG_QUIET;
     struct file_t *f = get_file_blocks(argv[1]);
     //pairing_t* pairing = init_pairing();
@@ -49,6 +53,8 @@ int main(int argc, char *argv[])
 
     int result = verify_storage(f,*response,query_obj,g,params.alpha,pubkey);
     printf("Response: %d\n",result);
+
+    EXIT_TEST();
 
     return 0;
 }
