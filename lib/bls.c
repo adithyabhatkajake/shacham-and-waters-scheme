@@ -19,10 +19,10 @@ int verify_signature(pairing_t pairing,
     return element_cmp(temp1, temp2)?SIGN_FAIL:SIGN_OK;
 }
 
-element_t* bls_hash(void* data, int length, pairing_t pairing)
+struct element_s* bls_hash(void* data, int length, pairing_t pairing)
 {
-    element_t* new_elem = malloc(sizeof(element_t));
-    element_init_G1(*new_elem, pairing);
-    element_from_hash(*new_elem,data,length);
+    struct element_s* new_elem = malloc(sizeof(element_t));
+    element_init_G1(new_elem, pairing);
+    element_from_hash(new_elem,data,length);
     return new_elem;
 }

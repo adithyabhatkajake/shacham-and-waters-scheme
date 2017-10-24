@@ -67,4 +67,4 @@ int verify_signature(pairing_t pairing,
  *  1. Clean the paramters
  *  2. Add documentation
  */
-element_t* bls_hash(void*,int,pairing_t);
+struct element_s* bls_hash(void*,int,pairing_t);

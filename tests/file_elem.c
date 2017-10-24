@@ -8,18 +8,6 @@
 #include <test.h>
 #include <bls.h>
 
-static inline char* hexstring(unsigned char* bytes, int len)
-{
-    char* buffer    = malloc(sizeof(char)*((2*len)+1));
-    char* temp      = buffer;
-    for(int i=0;i<len;i++) {
-        sprintf(temp,"%02x",bytes[i]);
-        temp += 2;
-    }
-    *temp = '\0';
-    return buffer;
-}
-
 int main(int argc, char* argv[])
 {
     /* code */

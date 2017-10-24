@@ -67,14 +67,44 @@ typedef enum log_level_t loglevel;
 extern loglevel log_level;  
 
 /*
+ *  define function Log():
+ *  The function takes a Log level and normal printf like
+ *  format string with arguments for Logging purposes.
+ *@param
+ *  loglevel: level
+ *  The level of the Log to be printed.
+ *  One of the types defined by enum log_level_t.
+ *@Ex.
+ *  Log(LOG_ERROR,"This is an error. "
+ *      "Do not pass %d to %s function",0,__FUNC__);
  */
 void Log(loglevel level,const char* format, ...);
 
+/*
+ *  define function set_loglevel():
+ *  The function sets the global log level which will be used
+ *  by the Log calls to print.
+ *@param
+ *  loglevel: level
+ *  The level of verbosity desired by the user.
+ *  LOG_QUIET: Log only Bugs and Error messages
+ *  LOG_DEBUG: Log DEBUG messages
+ *  LOG_TRACE: Log Function call traces with their parameters
+ */
 static inline void set_loglevel(loglevel level) {
     log_level = level;
 }
 
+/*
+ *  define function logline():
+ *  The function is used for quick debugging.
+ *  logline acts as a marker for successfully reaching a line.
+ *@param
+ *  int: line
+ *  Usually __LINE__ is passed to the function.
+ *  Any marking integer can be used.
+ */
 static inline void logline(int line)
 {
-    Log(log_level,"Logging Line:%d\n",line);
+    Log(log_level,"Logging Marker:%d\n",line);
 }

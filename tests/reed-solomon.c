@@ -8,13 +8,6 @@
 
 static struct rs_control *rs_decoder;
 
-static void print_hex(unsigned char *bytes, int len)
-{
-    for(int i=0;i<len;i++)
-        printf("%02x",bytes[i]);
-    printf("\n");
-}
-
 int main() 
 {
 
