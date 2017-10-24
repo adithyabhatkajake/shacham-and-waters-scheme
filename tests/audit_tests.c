@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    log_level = LOG_DEBUG;
+    log_level = LOG_QUIET;
     struct file_t *f = get_file_blocks(argv[1]);
     //pairing_t* pairing = init_pairing();
 
@@ -30,14 +30,14 @@ int main(int argc, char *argv[])
     set_tags(f,&params);
 
     struct query_t query_obj = {
-        .query_length = 2,
+        .query_length = 1,
     };
     query_obj.pairing   = params.pairing;
     query_obj.indices   = malloc(sizeof(uint32_t) * query_obj.query_length);
     query_obj.nu        = malloc(sizeof(struct element_s) * query_obj.query_length);
 
     query_obj.indices[0] = 0;
-    query_obj.indices[1] = 1;
+    //query_obj.indices[1] = 1;
 
     for(int i=0;i<query_obj.query_length;i++) {
         element_init_Zr(query_obj.nu+i,params.pairing);

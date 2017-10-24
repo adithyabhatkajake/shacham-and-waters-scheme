@@ -16,7 +16,7 @@
 #include <pbc/pbc.h>    // For the element_t,pairing definitions
 #include <stdint.h>     // For the uintXX declarations
 
-#define DEFAULT_BLK_SIZE 128
+#define DEFAULT_BLK_SIZE 16
 
 struct file_t {
     struct file_piece_t*    pieces;     // An array of file_piece_t

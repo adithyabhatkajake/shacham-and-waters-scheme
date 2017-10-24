@@ -25,7 +25,7 @@ static bool file_compare(struct file_t f1, struct file_t f2)
         if(fpiece1.blk_size != fpiece2.blk_size) {
             return false;
         }
-
+ 
         for(int j=0;j<6;j++) {
             if(fpiece1.parity[j]!=fpiece2.parity[j])
                 return false;

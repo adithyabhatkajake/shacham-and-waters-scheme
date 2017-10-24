@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     
         printf("Parity bits:\n");
         for (int i = 0; i < 12; i++)
-            printf("%02x", parity_data[i]);
+            printf("%02x", (unsigned char)parity_data[i]);
         printf("\n");
 
         free(par);

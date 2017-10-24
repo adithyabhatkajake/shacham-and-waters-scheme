@@ -41,7 +41,8 @@ int main()
      */
 
     data8[blocks/2] += 5;
-    data8[blocks/3] += 10;
+    data8[blocks/3] += 5;
+    data8[blocks/4] += 5;
 
     printf("Before Decoding\n");
 

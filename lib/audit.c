@@ -64,40 +64,34 @@ struct query_response_t* query(struct file_t* file,struct query_t query_obj)
      *  code
      */
     response->pairing = query_obj.pairing;
-    logline(__LINE__);
     struct pairing_s* pairing = query_obj.pairing;
-    logline(__LINE__);
     element_init_G1(response->sigma,pairing);
-    logline(__LINE__);
     element_set1(response->sigma);
-    logline(__LINE__);
     element_init_Zr(response->mu,pairing);
-    logline(__LINE__);
     for(uint32_t i = 0;i < query_obj.query_length;i++) {
         element_t temp;
         element_init_G1(temp,query_obj.pairing);
-        logline(__LINE__);
+
         element_pow_zn(temp,
             file->pieces[query_obj.indices[i]].tag->sigma,query_obj.nu+i);
-        logline(__LINE__);
+
         element_mul(response->sigma,temp,response->sigma);
         mpz_t integer;
-        logline(__LINE__);
+
         mpz_init_set_str(
             integer,
             hexstring(file->pieces[query_obj.indices[i]].data,
                             file->pieces[query_obj.indices[i]].blk_size),
             16);
-        logline(__LINE__);
+
         element_init_Zr(temp,query_obj.pairing);
         element_set_mpz(temp,integer);
         element_mul(temp,temp,query_obj.nu+i);
         element_add(response->mu,response->mu,temp);
-        logline(__LINE__);
+
         mpz_clear(integer);
         //element_free(temp);
     }
-    Log(LOG_TRACE,"Entering LINE %d",__LINE__);
 
     return response;
 }
@@ -106,27 +100,45 @@ enum audit_result verify_storage(struct file_t* file,
     struct query_response_t response,struct query_t query_obj, 
     element_t g,element_t alpha,element_t pubkey)
 {
+    int first = 1;
     element_t temp1,temp2,temp5;
     element_init_GT(temp1,query_obj.pairing);
     element_init_GT(temp2,query_obj.pairing);
     element_init_G1(temp5,query_obj.pairing);
-    element_set1(temp5);
+    
+    pairing_apply(temp1,response.sigma,g,query_obj.pairing); // temp1 = e(sigma,g)
 
-    pairing_apply(temp1,response.sigma,g,query_obj.pairing);
     for(int i=0;i<query_obj.query_length;i++) {
         element_t temp3,temp4;
         element_init_G1(temp3,query_obj.pairing);
+        element_init_G1(temp4,query_obj.pairing);
+
         element_t* new_elem = bls_hash
             ((void*)query_obj.indices+i,
             sizeof(uint32_t),
             query_obj.pairing);
-        element_pow_zn(temp3,*new_elem,query_obj.nu+i);
-        element_init_G1(temp4,query_obj.pairing);
-        element_pow_zn(temp4,alpha,response.mu);
-        element_mul(temp3,temp3,temp4);
-        element_mul(temp5,temp2,temp3);
+        element_printf("Hash(%lu):%B\n",query_obj.indices[i],*new_elem);
+        element_pow_zn(temp3,*new_elem,query_obj.nu+i); // temp3 = H(i)^v(i)
+        element_printf("temp3:%B\n",temp3);
+        element_pow_zn(temp4,alpha,response.mu); // temp4 = alpha^mu
+        element_printf("temp4:%B\n",temp4);        
+        element_mul(temp3,temp3,temp4); // temp3 = temp3 x temp4
+        element_printf("temp3:%B\n",temp3);
+        if(first) {
+            first = 0;
+            element_set(temp5,temp3);
+        }
+        else {
+            element_mul(temp5,temp5,temp3); // temp5 = temp5*temp3
+        }
+        element_printf("temp5:%B\n",temp5);
+        
     }
     pairing_apply(temp2,temp5,pubkey,query_obj.pairing);
     element_printf("LHS:%B\nRHS:%B\n",temp1,temp2);
+
+    /*
+     *  element_cmp() returns 0 if the elements are the same.
+     */
     return element_cmp(temp1,temp2);
 }
