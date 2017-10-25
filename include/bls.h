@@ -68,3 +68,16 @@ int verify_signature(pairing_t pairing,
  *  2. Add documentation
  */
 struct element_s* bls_hash(void*,int,pairing_t);
+
+/*
+ *  define function bls_hash_int():
+ *  The function creates an element e in G from the integer
+ *  Refer to Shachams-and-waters paper for more information.
+ *@param:
+ *  uint32_t: The number to be hashed
+ *  pairing_t: The pairing in which to perform the hashing
+ *@return:
+ *  Returns an element belonging to G1=G2=G for the 
+ *  given integer.
+ */
+struct element_s* bls_hash_int(uint32_t,pairing_t);

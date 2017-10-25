@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <gmp.h>
 
-#include "print-utils.h"
-#include "handlefile.h"
-#include "logging.h"
-#include "sha256.h"
-#include "audit.h"
-#include "bls.h"
+#include <print-utils.h>
+#include <handlefile.h>
+#include <logging.h>
+#include <sha256.h>
+#include <audit.h>
+#include <bls.h>
 
 struct tag_t* generate_tag(tag_param_t* tag_params)
 {
@@ -21,18 +21,17 @@ struct tag_t* generate_tag(tag_param_t* tag_params)
     char* string;
     mpz_t integer;
     
-    tag             = malloc(sizeof(struct tag_t));
+    tag             = (struct tag_t*)malloc(sizeof(struct tag_t));
     tag->index      = tag_params->index;
     string          = hexstring((unsigned char*)(fpiece->data),(int)fpiece->blk_size);
     new_elem        = bls_hash((void*)&index,sizeof(uint32_t),tag_params->pairing); // new_elem = H(i)
     
-    //Log(LOG_TRACE,"string:%s",string);
     element_init_G1(tag->sigma,tag_params->pairing);
     element_init_same_as(alpha,tag_params->alpha);
     element_init_Zr(f_i,tag_params->pairing);
     element_set(alpha,tag_params->alpha);
     mpz_init_set_str(integer,string,16);
-    //gmp_printf("integer,%Zx\n",integer);
+
     element_set_mpz(f_i,integer);
     element_pow_zn(alpha,alpha,f_i); // alpha = alpha^F[i]
     element_mul(new_elem,new_elem,alpha); // new_elem = H(i).(alpha^F[i])
@@ -59,7 +58,7 @@ void set_tags(struct file_t* file, tag_param_t* params)
 struct query_response_t* query(struct file_t* file,struct query_t query_obj)
 {
     struct query_response_t* response;
-    response = malloc(sizeof(struct query_response_t));
+    response = (struct query_response_t*)malloc(sizeof(struct query_response_t));
 
     /*
      *  code
@@ -81,7 +80,7 @@ struct query_response_t* query(struct file_t* file,struct query_t query_obj)
 
         mpz_init_set_str(
             integer,
-            hexstring(file->pieces[query_obj.indices[i]].data,
+            (const char*)hexstring((unsigned char*)file->pieces[query_obj.indices[i]].data,
                             file->pieces[query_obj.indices[i]].blk_size),
             16);
 
@@ -141,5 +140,9 @@ enum audit_result verify_storage(struct file_t* file,
     /*
      *  element_cmp() returns 0 if the elements are the same.
      */
-    return element_cmp(temp1,temp2);
+    int ret = element_cmp(temp1,temp2);
+    if(!ret) 
+        return PASS;
+    
+    return FAIL;
 }

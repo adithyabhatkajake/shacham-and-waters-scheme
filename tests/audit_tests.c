@@ -2,18 +2,23 @@
 
 #include <stdio.h>
 
-#include <test.h>
-#include <logging.h>
-#include <bls.h>
-#include <audit.h>
 #include <handlefile.h>
+#include <logging.h>
+#include <audit.h>
+#include <test.h>
+#include <bls.h>
 
-int main(int argc, char *argv[])
+void startup()
 {
     INIT_TEST();
     log_level = LOG_QUIET;
+}
+
+int main(int argc, char *argv[])
+{
+    startup();
+    
     struct file_t *f = get_file_blocks(argv[1]);
-    //pairing_t* pairing = init_pairing();
 
     tag_param_t params;
     element_t g,pubkey;
