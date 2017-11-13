@@ -24,7 +24,7 @@ struct tag_t* generate_tag(tag_param_t* tag_params)
     tag             = (struct tag_t*)malloc(sizeof(struct tag_t));
     tag->index      = tag_params->index;
     string          = hexstring((unsigned char*)(fpiece->data),(int)fpiece->blk_size);
-    new_elem        = bls_hash((void*)&index,sizeof(uint32_t),tag_params->pairing); // new_elem = H(i)
+    new_elem        = bls_hash_int(index,tag_params->pairing); // new_elem = H(i)
     
     element_init_G1(tag->sigma,tag_params->pairing);
     element_init_same_as(alpha,tag_params->alpha);
@@ -113,9 +113,8 @@ enum audit_result verify_storage(struct file_t* file,
         element_init_G1(temp3,query_obj.pairing);
         element_init_G1(temp4,query_obj.pairing);
 
-        struct element_s* new_elem = bls_hash
-            ((void*)query_obj.indices+i,
-            sizeof(uint32_t),
+        struct element_s* new_elem = bls_hash_int
+            (query_obj.indices[i],
             query_obj.pairing);
         element_printf("Hash(%lu):%B\n",query_obj.indices[i],new_elem);
         element_pow_zn(temp3,new_elem,query_obj.nu+i); // temp3 = H(i)^v(i)

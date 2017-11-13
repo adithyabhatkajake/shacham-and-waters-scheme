@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     element_random(params.alpha);
     element_random(g);
 
-    element_mul(pubkey,g,params.secret_x);
+    element_pow_zn(pubkey,g,params.secret_x);
 
     set_tags(f,&params);
 
@@ -42,11 +42,11 @@ int main(int argc, char *argv[])
         .query_length = 1,
     };
     query_obj.pairing   = params.pairing;
-    query_obj.indices   = malloc(sizeof(uint32_t) * query_obj.query_length);
-    query_obj.nu        = malloc(sizeof(struct element_s) * query_obj.query_length);
+    query_obj.indices   = (uint32_t*)malloc(sizeof(uint32_t) * query_obj.query_length);
+    query_obj.nu        = (struct element_s*)malloc(sizeof(struct element_s) * query_obj.query_length);
 
     query_obj.indices[0] = 0;
-    //query_obj.indices[1] = 1;
+    query_obj.indices[1] = 1;
 
     for(int i=0;i<query_obj.query_length;i++) {
         element_init_Zr(query_obj.nu+i,params.pairing);
