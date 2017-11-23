@@ -223,7 +223,7 @@ void generate_parity(struct file_t* f)
         char*       parity_data;
         uint16_t*   par;
 
-        par         = malloc(sizeof(uint16_t)*6);
+        par         = (uint16_t*)malloc(sizeof(uint16_t)*6);
 
         if(!par) {
             Log(LOG_ERROR,"Unable to allocate memory to parity buffers");

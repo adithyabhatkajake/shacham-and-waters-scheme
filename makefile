@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -std=c99
+CFLAGS = -g -std=gnu99
 INCLUDES = -I include/
 LIBS = -lrs -lgmp -pbc
 
@@ -9,6 +9,7 @@ LIB_SRCS  := audit.c 		\
 			 handlefile.c	\
 			 hmac-sha256.c 	\
 			 logging.c		\
+			 port.c			\
 			 print-utils.c	\
 			 sha256.c		
 			 

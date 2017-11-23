@@ -3,3 +3,4 @@ tests/*.o
 .vscode/*
 *.o
 *-TEST
+deps/*

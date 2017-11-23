@@ -25,9 +25,9 @@ enum audit_result {
 
 struct __tag_param {
     struct file_piece_t* fpiece;    // An encoded file segment.
-    pairing_t            pairing;   // The pairing (p,g,G,GT,e).
-    element_t            alpha;     // A generator of G.
-    element_t            secret_x;  // A secret value x in Zp.
+    struct pairing_s*            pairing;   // The pairing (p,g,G,GT,e).
+    struct element_s*            alpha;     // A generator of G.
+    struct element_s*            secret_x;  // A secret value x in Zp.
     uint32_t             index;     // The spatial position of the file block.
 };
 

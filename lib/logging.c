@@ -1,7 +1,9 @@
-#include <stdio.h>
+#include <pbc/pbc.h>
 #include <stdlib.h>
-#include <logging.h>
 #include <stdarg.h>
+#include <stdio.h>
+
+#include <logging.h>
 
 loglevel log_level = LOG_QUIET;
 
@@ -42,10 +44,10 @@ void Log(loglevel level,const char* format, ...)
     if(level <= log_level) {
         va_list args;
 
-        printf("%-10s|",log_string(level));
+        element_printf("%-10s|",log_string(level));
 
         va_start(args,format);
-        vprintf(format,args);
+        element_printf(format,args);
         va_end(args);
 
         printf("\n");

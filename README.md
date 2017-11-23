@@ -9,6 +9,10 @@ An implementation of Shacham and Waters Proofs of Retrievability Scheme with pri
 * PBC Library
 * Reed Solomon kernel Library ported to userspace
 
+Alternatively, run install-deps.sh in root mode to collect and install all dependencies.
+
+`# sudo ./install-deps.sh`
+
 Run `make all` to build the libraries.
 ## Testing
 

@@ -31,7 +31,7 @@ struct tag_t {
 
 struct file_piece_t {
     unsigned long long      blk_size;   // The size of the current block piece
-    struct tag_t*           tag;      // The tag generated for the current block
+    struct tag_t*           tag;        // The tag generated for the current block
     uint16_t*               parity;     // The reed solomon parity generated for the block
     void*                   data;       // The actual data of the file
 };
