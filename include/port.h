@@ -32,8 +32,14 @@ struct keypair_t {
     struct private_key_t* pvt_key;
 };
 
+struct file_t* import_file(const char*);
+void export_file(struct file_t*,const char*);
 struct public_key_t* import_public_key(const char*);
 void export_public_key(struct public_key_t*, const char* filename);
 struct private_key_t* import_pvt_key(const char*);
 void export_pvt_key(struct private_key_t*, const char* filename);
 struct keypair_t* generate_key_pair();
+
+void free_public_key(struct public_key_t*);
+void free_private_key(struct private_key_t*);
+void free_keypair(struct keypair_t*);

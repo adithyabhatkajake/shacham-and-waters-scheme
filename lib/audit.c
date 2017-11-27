@@ -51,7 +51,7 @@ void set_tags(struct file_t* file, tag_param_t* params)
         params->index       = i;
         params->fpiece->tag = generate_tag(params);
         
-        element_printf("Sigma[%d]:%B\n",params->fpiece->tag->index,params->fpiece->tag->sigma);
+        // element_printf("Sigma[%d]:%B\n",params->fpiece->tag->index,params->fpiece->tag->sigma);
     }
 }
 
